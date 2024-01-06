@@ -1,0 +1,92 @@
+.navbar{
+  background: rgb(32,33,36);
+  background: linear-gradient(0deg, rgba(32,33,36,1) 0%, rgba(204,61,61,1) 100%);
+  min-height: 100px;
+  padding-right: 60px;
+}
+
+.nav-link{
+  color: white;
+  font-size: 20px;
+}
+
+.nav-link:hover{
+  color: rgba(234, 91, 91, 1);
+}
+
+.navbar-brand{
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/*serch button*/
+.btn{
+  font-size: 20px;
+  background-color: #313235;
+  border: rgba(204,61,61,1) 2px solid;
+  color: white;
+  border-radius: 5rem;
+  margin-left: 1rem;
+}
+
+.btn:hover{
+  color: rgba(204,61,61,1);
+}
+
+
+.form-control{
+  border: #313235 4px solid;
+  border-radius: 5rem;
+  padding: 5%;
+}
+
+
+
+/* Dropdown Button */
+.navbar .dropdown .dropbtn {
+  color: white;
+  padding: 0.5rem;
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  background-color: #202124;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  color: #202124;
+  background-color: rgba(204,61,61,1);
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  /*background-color: #3e8e41;*/
+}
