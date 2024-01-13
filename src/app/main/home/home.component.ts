@@ -15,10 +15,9 @@ export class HomeComponent {
   database = new DataBase();
 
   write(){
-    this.database.writeUserData("Adolf","Adolf","Hitler","a.h@.3r.du","ah", "666666666");
     console.log("Dodawanie");
   }
   constructor() {
-    this.write();
+
   }
 }

@@ -22,14 +22,13 @@ const db = getDatabase();
 
 export class DataBase{
 
-  writeUserData(userName: string, name: string, surname: string, email: string, password: string, telNumber: string) {
-    const reference = ref(db, 'users/' + userName);
+  writeUserData(name: string, surname: string, email: string, password1: string, telNumber: string) {
+    const reference = ref(db, 'users/' + email);
     set(reference, {
-      username: userName,
       name: name,
       surname: surname,
       email: email,
-      password: password,
+      password: password1,
       telNumber : telNumber
     });
   }
