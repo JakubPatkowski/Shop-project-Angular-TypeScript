@@ -1,1 +1,28 @@
-<p>login works!</p>
+<div class="LoginForm mx-auto">
+  <form  [formGroup]="loginForm" (ngSubmit)="validate()">
+
+
+      <div class="form-group">
+        <label for="email">email</label>
+        <input type="text" class="form-control" id="email" placeholder="email" formControlName="email">
+
+        <div *ngIf="loginForm.get('email') && loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="alert">
+          <div *ngIf="emailError">{{ emailError }}</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">password</label>
+        <input type="text" class="form-control" id="password" placeholder="password" formControlName="password">
+        <div *ngIf="loginForm.get('password') && loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="alert">
+          <div *ngIf="passwordError">{{ passwordError }}</div>
+        </div>
+      </div>
+
+
+
+    <button type="submit">Submit</button>
+    <p>Form Status: {{ loginForm.status }}</p>
+
+  </form>
+</div>

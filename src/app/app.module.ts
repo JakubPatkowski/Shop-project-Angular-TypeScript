@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule, NgModel} from "@angular/forms";
+import {FormsModule, NgModel, ReactiveFormsModule} from "@angular/forms";
 
 
 import { HomeComponent } from './main/home/home.component';
@@ -13,6 +13,8 @@ import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
 
+// import { AngularFireModule } from "@angular/fire/compat";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,7 @@ import { RegisterComponent } from './user/register/register.component';
     NavComponent,
     ContactComponent,
     UserComponent,
-    LoginComponent,
+
 
   ],
   imports: [
@@ -28,7 +30,11 @@ import { RegisterComponent } from './user/register/register.component';
     //subpages routing
     AppRoutingModule,
     FormsModule,
-    RegisterComponent
+    RegisterComponent,
+    LoginComponent,
+    ReactiveFormsModule,
+    //firebase
+    // AngularFireModule
   ],
   providers: [],
   bootstrap: [AppComponent]

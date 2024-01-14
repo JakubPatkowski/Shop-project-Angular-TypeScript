@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 
 import { DataBase} from "../../../../firebase-config";
 
-import { AuthService} from "../firebase.auth";
+import { registerUser} from "../../../../firebase-config";
+
+
 
 import {
   FormGroup,
@@ -29,10 +31,11 @@ import {NgIf} from "@angular/common";
 
   export class RegisterComponent {
 
+  db = new DataBase();
   constructor(private formBuilder: FormBuilder) {} //private authService: AuthService
 
-  nameError:string = '';
-  surnameError:string = '';
+  nameError:string = ' ';
+  surnameError:string = ' ';
   emailError:string = '';
   telError:string = '';
   password1Error:string = '';
@@ -144,30 +147,26 @@ import {NgIf} from "@angular/common";
 
   });
 validate(){
-
+  if(this.registerForm.valid){
+    registerUser(
+      this.registerForm.get('name')?.value ?? '',
+      this.registerForm.get('surname')?.value ?? '',
+      this.registerForm.get('email')?.value ?? '',
+      this.registerForm.get('telNumber')?.value ?? '',
+      this.registerForm.get('password1')?.value ?? ''
+    );
+  }
 }
 
   printName() {
-    // console.log("dodaje");
-    // const email = 'example@email.com'; // Przykładowy email
-    // const password = 'examplePassword'; // Przykładowe hasło
-    //
-    // this.authService.signUp(email, password)
-    //   .then((result) => {
-    //     // Obsługa sukcesu, np. wyświetlenie komunikatu o pomyślnej rejestracji
-    //     console.log('Rejestracja udana', result);
-    //   })
-    //   .catch((error) => {
-    //     // Obsługa błędu, np. wyświetlenie komunikatu o nieudanej rejestracji
-    //     console.error('Błąd rejestracji', error);
-    //   });
+
   }
 
   // addUser() {
   //   console.log("dodawanie");
   //
   //   if (this.registerForm.valid) {
-  //     const { name, surname, email, password1, telNumber } = this.registerForm.value;
+  //     const { name, surname, email, passwor d1, telNumber } = this.registerForm.value;
   //     console.log(name)
   //     this.dataBase.writeUserData(name, surname, email, password1, telNumber);
   //     this.registerForm.reset();

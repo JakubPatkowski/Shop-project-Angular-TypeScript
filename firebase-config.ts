@@ -1,9 +1,12 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue, } from "firebase/database";
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
+
 // https://firebase.google.com/docs/web/setup#available-libraries
+
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+
+// import { AngularFireModule} from "@angular/fire/compat";
+// import { getFirestore} from "@angular/fire/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,47 +21,55 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getDatabase();
+
+// connectAuthEmulator(auth, "http://localhost:9099")
+
+export const loginUser = async (email: string, password: string) => {
+  const user = await signInWithEmailAndPassword(auth, email, password);
+  console.log(user.user.uid);
+
+}
+
+export const registerUser = async (name: string, surname: string, email: string, telNumber: string, password: string) => {
+  const user = await createUserWithEmailAndPassword(auth, email, password);
+  writeUserData(user.user.uid, name, surname, email, telNumber);
+}
+
+function writeUserData(uid: string, name: string, surname: string, email: string, telNumber: string) {
+  const reference = ref(db, 'users/' + uid);
+  set(reference, {
+    name: name,
+    surname: surname,
+    email: email,
+    telNumber : telNumber
+  });
+}
 
 export class DataBase{
 
-  writeUserData(name: string, surname: string, email: string, password1: string, telNumber: string) {
-    const reference = ref(db, 'users/' + email);
-    set(reference, {
-      name: name,
-      surname: surname,
-      email: email,
-      password: password1,
-      telNumber : telNumber
-    });
-  }
 
-  readUserData(username: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const distanceRef = ref(db, "users/" + username);
-      onValue(distanceRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data !== null) {
-          resolve(data);
-        } else {
-          reject("Brak danych dla użytkownika: " + username);
-        }
-      }, (error) => {
-        reject(error);
-      });
-    });
-  }
+//wszystko poniżej do póżniejszej poprawy
 
-  returnUserData(userId: string){
-    //wczytywanie danych
 
-    const distanceRef = ref(db, "users/" + userId + "/email");
-    onValue(distanceRef, (snapshot) => {
-      const data = snapshot.val();
+  // readUserData(username: string): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //     const distanceRef = ref(db, "users/" + username);
+  //     onValue(distanceRef, (snapshot) => {
+  //       const data = snapshot.val();
+  //       if (data !== null) {
+  //         resolve(data);
+  //       } else {
+  //         reject("Brak danych dla użytkownika: " + username);
+  //       }
+  //     }, (error) => {
+  //       reject(error);
+  //     });
+  //   });
+  // }
 
-      return data;
-    })
-  }
+
 }
 
 
