@@ -32,7 +32,7 @@ import {NgIf} from "@angular/common";
   export class RegisterComponent {
 
   db = new DataBase();
-  constructor(private formBuilder: FormBuilder) {} //private authService: AuthService
+  constructor(private formBuilder: FormBuilder) {}
 
   nameError:string = ' ';
   surnameError:string = ' ';
@@ -108,9 +108,9 @@ import {NgIf} from "@angular/common";
   password1Validation(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const password1Re: RegExp = /^(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*])[0-9A-Za-z!@#$%^&*]{12,}$/;
-      const forbidden = password1Re.test(control.value);
+      const test = password1Re.test(control.value);
 
-      if (!forbidden) {
+      if (!test) {
         this.password1Error = "Niepoprawny hasło"
         return { forbiddenName: { value: control.value } };
 
@@ -146,8 +146,8 @@ import {NgIf} from "@angular/common";
 
 
   });
-validate(){
-  if(this.registerForm.valid){
+validate(){ //walidacja formularza
+  if(this.registerForm.valid){ //jeżeli jest poprawny zarejstruj użytkownika
     registerUser(
       this.registerForm.get('name')?.value ?? '',
       this.registerForm.get('surname')?.value ?? '',

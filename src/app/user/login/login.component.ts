@@ -2,8 +2,14 @@ import { Component } from '@angular/core';
 
 import { DataBase} from "../../../../firebase-config";
 
-import { loginUser } from "../../../../firebase-config";
 
+import { UserSession } from "../../../../firebase-config";
+
+import { AuthenticationServiceComponent } from "../authentication-service/authentication-service.component";
+
+//import { AppComponent } from "../../app.component";
+
+import { Router } from "@angular/router";
 
 import {
   FormGroup,
@@ -15,6 +21,7 @@ import {
   AbstractControl, ValidationErrors
 } from '@angular/forms';
 import {NgIf} from "@angular/common";
+import {AppComponent} from "../../app.component";
 
 @Component({
   standalone: true,
@@ -27,10 +34,11 @@ import {NgIf} from "@angular/common";
 
 
 export class LoginComponent {
+
   emailError: string = '';
   passwordError: string = '';
-  constructor(private formBuilder: FormBuilder) {}
-
+  constructor(private formBuilder: FormBuilder, private appComponent: AppComponent, private router: Router) {}
+  loginAuthentication = new AuthenticationServiceComponent()
   emailValidation(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const emailRe: RegExp = /^[a-z]{1}[a-z0-9_.\-]*@[a-z0-9]+.[a-z0-9]+$/;
@@ -52,12 +60,28 @@ export class LoginComponent {
     password: ['',[Validators.required]]
   })
 
-  validate(){
+  async validate(){
     if(this.loginForm.valid){
-      loginUser(
-        this.loginForm.get('email')?.value?? '',
-        this.loginForm.get('password')?.value?? ''
-      );
+      if(await UserSession.loginUser(
+        this.loginForm.get('email')?.value ?? '',
+        this.loginForm.get('password')?.value ?? '')){
+        await this.router.navigate(['user/home']);
+      }
     }
   }
+
+  check(){
+    if(this.appComponent.getUser() != null){
+      console.log("Zalogowany");
+      return true;
+    } else {
+      console.log("Nie zalogowany");
+      return false;
+    }
+  }
+
+
+
+  protected readonly UserSession = UserSession;
+  protected readonly AuthenticationServiceComponent = AuthenticationServiceComponent;
 }

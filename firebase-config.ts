@@ -1,12 +1,28 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue, } from "firebase/database";
+import {initializeApp} from "firebase/app";
+import {getDatabase, ref, set, onValue} from "firebase/database";
+import { AuthenticationServiceComponent} from "./src/app/user/authentication-service/authentication-service.component";
+import { Injectable } from '@angular/core';
+
 
 // https://firebase.google.com/docs/web/setup#available-libraries
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+  setPersistence,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import { User} from "./src/app/user/user.class";
+//import { AuthenticationService} from "./src/app/user/authentication-service/authentication-service.component";
+//import { User } from "./src/app/user/user.component";
 
-// import { AngularFireModule} from "@angular/fire/compat";
-// import { getFirestore} from "@angular/fire/firestore";
+
+
+
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,18 +35,15 @@ const firebaseConfig = {
   appId: "1:559467956939:web:02b06a0ce46c1dd5a1694e"
 };
 
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const db = getDatabase();
+var checkLogin = new AuthenticationServiceComponent();
+export const user = auth.currentUser
 
-// connectAuthEmulator(auth, "http://localhost:9099")
-
-export const loginUser = async (email: string, password: string) => {
-  const user = await signInWithEmailAndPassword(auth, email, password);
-  console.log(user.user.uid);
-
-}
 
 export const registerUser = async (name: string, surname: string, email: string, telNumber: string, password: string) => {
   const user = await createUserWithEmailAndPassword(auth, email, password);
@@ -47,28 +60,59 @@ function writeUserData(uid: string, name: string, surname: string, email: string
   });
 }
 
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserSession{
+
+  async readUserData(){
+    const reference = ref(db, 'users/' + auth.currentUser?.uid);
+    return new Promise((resolve) => {
+      onValue(reference, (snapshot) => {
+        const data = snapshot.val();
+        const user = new User(data.name, data.surname, data.email, data.telNumber);
+        resolve(user);
+      });
+    })
+  }
+
+  static loginUser = async (email: string, password: string) => {
+    try {
+      await setPersistence(auth, browserSessionPersistence);
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      //console.log(user.user.uid);
+      return true;
+    } catch (error: any) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  static isLoggedIn(){
+    return checkLogin.getLoggedIn();
+  }
+
+
+
+
+  static logout(): Promise<boolean> {
+    return signOut(auth)
+      .then(() => {
+        // Powodzenie - zwróć true
+        return true;
+      })
+      .catch((error) => {
+        // Niepowodzenie - zwróć false
+        console.error(error);
+        return false;
+      });
+  }
+
+
+}
+
 export class DataBase{
-
-
-//wszystko poniżej do póżniejszej poprawy
-
-
-  // readUserData(username: string): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     const distanceRef = ref(db, "users/" + username);
-  //     onValue(distanceRef, (snapshot) => {
-  //       const data = snapshot.val();
-  //       if (data !== null) {
-  //         resolve(data);
-  //       } else {
-  //         reject("Brak danych dla użytkownika: " + username);
-  //       }
-  //     }, (error) => {
-  //       reject(error);
-  //     });
-  //   });
-  // }
-
 
 }
 

@@ -6,14 +6,16 @@ import { AppComponent } from './app.component';
 import {FormsModule, NgModel, ReactiveFormsModule} from "@angular/forms";
 
 
+
 import { HomeComponent } from './main/home/home.component';
 import { NavComponent } from './main/nav/nav.component';
 import { ContactComponent } from './main/contact/contact.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
+import {UserSession} from "../../firebase-config";
 
-// import { AngularFireModule } from "@angular/fire/compat";
+
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { RegisterComponent } from './user/register/register.component';
     NavComponent,
     ContactComponent,
     UserComponent,
+
 
 
   ],
@@ -33,8 +36,9 @@ import { RegisterComponent } from './user/register/register.component';
     RegisterComponent,
     LoginComponent,
     ReactiveFormsModule,
+
     //firebase
-    // AngularFireModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
